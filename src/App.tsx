@@ -126,7 +126,7 @@ function App() {
               <div key={res.id} className="result-item">
                 <span className="result-name">{res.name}</span>
                 <span className="result-amount">
-                  ${res.amount.toFixed(2)}
+                  ฿{res.amount.toFixed(2)}
                 </span>
               </div>
             ))}
