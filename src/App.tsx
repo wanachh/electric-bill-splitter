@@ -9,6 +9,7 @@ type Person = {
 
 function App() {
   const [totalPrice, setTotalPrice] = useState<string>('');
+  const [totalPriceError, setTotalPriceError] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [people, setPeople] = useState<Person[]>([
     { id: '1', name: 'Person 1', days: '' },
@@ -45,7 +46,7 @@ function App() {
       return updatedPerson;
     }));
   };
-  
+
   // Calculate totals
   const { totalDays, results } = useMemo(() => {
     let daysSum = 0;
@@ -91,10 +92,21 @@ function App() {
               const val = e.target.value;
               // อนุญาตให้พิมพ์ตัวเลขและจุดทศนิยมไม่เกิน 2 ตำแหน่ง
               if (val === '' || /^\d*\.?\d{0,2}$/.test(val)) {
+                if (val === '' || parseFloat(val) === 0) {
+                  setTotalPriceError('Price cannot be zero or empty');
+                } else {
+                  setTotalPriceError('');
+                }
                 setTotalPrice(val);
               }
             }}
+            style={totalPriceError ? { borderColor: 'var(--danger)' } : {}}
           />
+          {totalPriceError && (
+            <span className="error-text">
+              {totalPriceError}
+            </span>
+          )}
         </div>
       </div>
 
