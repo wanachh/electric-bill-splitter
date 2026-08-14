@@ -7,6 +7,10 @@
 
 ---
 
+**🚀 Live App:** [https://electricbillsplitter.pages.dev](https://electricbillsplitter.pages.dev)
+
+---
+
 เว็บนี้จะเป็น single page React + Vite + TypeScript รายละเอียดตามด้านล่างเลยจ้า
 
 ## Features
