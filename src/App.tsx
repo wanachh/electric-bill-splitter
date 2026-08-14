@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 type Person = {
   id: string;
@@ -9,9 +9,10 @@ type Person = {
 
 function App() {
   const [totalPrice, setTotalPrice] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [people, setPeople] = useState<Person[]>([
-    { id: '1', name: 'Person 1', days: '10' },
-    { id: '2', name: 'Person 2', days: '30' }
+    { id: '1', name: 'Person 1', days: '' },
+    { id: '2', name: 'Person 2', days: '' }
   ]);
 
   const addPerson = () => {
@@ -28,21 +29,23 @@ function App() {
   const updatePerson = (id: string, field: keyof Person, value: string) => {
     setPeople(people.map(p => {
       if (p.id !== id) return p;
-      
+
       const updatedPerson = { ...p, [field]: value };
-      
+
       if (field === 'days') {
-        if (value === '0' || value === '') {
+        if (value === '0' || value === '' || value == null) {
           updatedPerson.error = 'Days cannot be zero or empty';
+          setErrorMessage(updatedPerson.error);
         } else {
           updatedPerson.error = undefined;
+          setErrorMessage('');
         }
       }
-      
+
       return updatedPerson;
     }));
   };
-
+  
   // Calculate totals
   const { totalDays, results } = useMemo(() => {
     let daysSum = 0;
@@ -97,7 +100,7 @@ function App() {
 
       <div className="card">
         <h2 className="card-title">People & Days Stayed</h2>
-        
+
         {people.map((person) => (
           <div key={person.id} className="person-row">
             <div className="input-group">
@@ -114,7 +117,7 @@ function App() {
               <input
                 type="number"
                 min="1"
-                placeholder="0"
+                placeholder="31"
                 value={person.days}
                 onChange={(e) => updatePerson(person.id, 'days', e.target.value)}
                 style={person.error ? { borderColor: 'var(--danger)' } : {}}
@@ -125,8 +128,8 @@ function App() {
                 </span>
               )}
             </div>
-            <button 
-              className="btn btn-danger btn-icon" 
+            <button
+              className="btn btn-danger btn-icon"
               onClick={() => removePerson(person.id)}
               title="Remove person"
               aria-label="Remove person"
@@ -149,14 +152,20 @@ function App() {
         <h2 className="card-title">Results Breakdown</h2>
         {results.length > 0 && parseFloat(totalPrice) > 0 && totalDays > 0 ? (
           <div className="results-list">
-            {results.map(res => (
-              <div key={res.id} className="result-item">
-                <span className="result-name">{res.name}</span>
-                <span className="result-amount">
-                  ฿{res.amount.toFixed(2)}
-                </span>
+            {errorMessage ? (
+              <div className="empty-state">
+                Please enter a valid total price and at least one person's days to see the breakdown.
               </div>
-            ))}
+            ) : (
+              results.map(res => (
+                <div key={res.id} className="result-item">
+                  <span className="result-name">{res.name}</span>
+                  <span className="result-amount">
+                    ฿{res.amount.toFixed(2)}
+                  </span>
+                </div>
+              ))
+            )}
           </div>
         ) : (
           <div className="empty-state">
