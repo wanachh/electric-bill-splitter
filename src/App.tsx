@@ -31,7 +31,7 @@ function App() {
   // Calculate totals
   const { totalDays, results } = useMemo(() => {
     let daysSum = 0;
-    const parsedPrice = parseFloat(totalPrice) || 0;
+    const parsedPrice = parseFloat(parseFloat(totalPrice).toFixed(2)) || 0;
 
     const parsedPeople = people.map(p => {
       const days = parseInt(p.days) || 0;
@@ -69,7 +69,13 @@ function App() {
             step="0.01"
             placeholder="e.g. 1500"
             value={totalPrice}
-            onChange={(e) => setTotalPrice(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              // อนุญาตให้พิมพ์ตัวเลขและจุดทศนิยมไม่เกิน 2 ตำแหน่ง
+              if (val === '' || /^\d*\.?\d{0,2}$/.test(val)) {
+                setTotalPrice(val);
+              }
+            }}
           />
         </div>
       </div>
