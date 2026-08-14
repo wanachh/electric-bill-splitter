@@ -95,6 +95,7 @@ h1 {
   flex-direction: column;
   gap: 6px;
   margin-bottom: 16px;
+  position: relative;
 }
 
 label {
@@ -126,7 +127,7 @@ input:focus {
   grid-template-columns: 2fr 1fr auto;
   gap: 12px;
   align-items: end;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 
 .person-row .input-group {
@@ -249,6 +250,16 @@ input:focus {
 .summary-val {
   font-weight: 600;
   color: var(--text-primary);
+}
+
+.error-text {
+  color: var(--danger);
+  font-size: 0.75rem;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  white-space: nowrap;
 }
 
 @media (max-width: 480px) {

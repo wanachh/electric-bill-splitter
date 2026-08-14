@@ -4,6 +4,7 @@ type Person = {
   id: string;
   name: string;
   days: string;
+  error?: string;
 };
 
 function App() {
@@ -25,13 +26,27 @@ function App() {
   };
 
   const updatePerson = (id: string, field: keyof Person, value: string) => {
-    setPeople(people.map(p => p.id === id ? { ...p, [field]: value } : p));
+    setPeople(people.map(p => {
+      if (p.id !== id) return p;
+      
+      const updatedPerson = { ...p, [field]: value };
+      
+      if (field === 'days') {
+        if (value === '0' || value === '') {
+          updatedPerson.error = 'Days cannot be zero or empty';
+        } else {
+          updatedPerson.error = undefined;
+        }
+      }
+      
+      return updatedPerson;
+    }));
   };
 
   // Calculate totals
   const { totalDays, results } = useMemo(() => {
     let daysSum = 0;
-    const parsedPrice = parseFloat(parseFloat(totalPrice).toFixed(2)) || 0;
+    const parsedPrice = parseFloat(totalPrice) || 0;
 
     const parsedPeople = people.map(p => {
       const days = parseInt(p.days) || 0;
@@ -98,11 +113,17 @@ function App() {
               <label>Days</label>
               <input
                 type="number"
-                min="0"
+                min="1"
                 placeholder="0"
                 value={person.days}
                 onChange={(e) => updatePerson(person.id, 'days', e.target.value)}
+                style={person.error ? { borderColor: 'var(--danger)' } : {}}
               />
+              {person.error && (
+                <span className="error-text">
+                  {person.error}
+                </span>
+              )}
             </div>
             <button 
               className="btn btn-danger btn-icon" 
