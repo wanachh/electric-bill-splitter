@@ -7,7 +7,7 @@
 
 ---
 
-A clean, modern React web application built with Vite to calculate the proportion of the electricity bill each person should pay based on the exact number of days they stayed.
+เว็บนี้จะเป็น single page React + Vite + TypeScript รายละเอียดตามด้านล่างเลยจ้า
 
 ## Features
 
