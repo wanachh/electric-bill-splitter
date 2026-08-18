@@ -20,7 +20,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg-color: hsl(220, 25%, 10%);
     --surface-color: hsl(220, 20%, 16%);
     --text-primary: hsl(220, 20%, 96%);
@@ -29,6 +29,16 @@
     --primary: hsl(212, 100%, 60%);
     --primary-hover: hsl(212, 100%, 68%);
   }
+}
+
+[data-theme="dark"] {
+  --bg-color: hsl(220, 25%, 10%);
+  --surface-color: hsl(220, 20%, 16%);
+  --text-primary: hsl(220, 20%, 96%);
+  --text-secondary: hsl(220, 20%, 70%);
+  --border-color: hsl(220, 20%, 24%);
+  --primary: hsl(212, 100%, 60%);
+  --primary-hover: hsl(212, 100%, 68%);
 }
 
 * {
@@ -60,6 +70,29 @@ body {
 header {
   text-align: center;
   margin-bottom: 8px;
+  position: relative;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+  box-shadow: var(--shadow-sm);
 }
 
 h1 {
